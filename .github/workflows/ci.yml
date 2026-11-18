@@ -1,0 +1,36 @@
+name: Local verification gates
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned tools
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip --cache-dir .cache/pip install -r requirements.txt
+          .venv/bin/python scripts/bootstrap_sdk.py
+          npm --prefix frontend ci --cache .cache/npm
+      - name: Contract gates
+        run: |
+          HOME="$GITHUB_WORKSPACE" GENVM_VERSION=v0.2.12 .venv/bin/genvm-lint check contracts/prophet_sentinel.py
+          .venv/bin/python scripts/check_project.py
+          .venv/bin/pytest -q
+      - name: Frontend gates
+        if: always()
+        run: |
+          node --test frontend/tests/calibration.test.mjs
+          npm --prefix frontend run build

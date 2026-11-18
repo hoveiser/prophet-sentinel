@@ -1,0 +1,35 @@
+{
+  "credentials": {
+    "project_env_exists": true,
+    "github_token_present": true,
+    "signing_key_count": 1
+  },
+  "expected_chain_id": 61999,
+  "prophet_grid_address": "0x31C53838fF49168128D772625e34d3D2F7e11116",
+  "network_checks": [
+    {
+      "url": "https://rpc.testnet-chain.genlayer.com",
+      "http_status": 200,
+      "chain_id": 4221
+    },
+    {
+      "url": "https://studio.genlayer.com/api",
+      "http_status": 200,
+      "chain_id": 61999
+    }
+  ],
+  "deployment_verified": false,
+  "prophet_grid_code_probe": {
+    "http_status": 200,
+    "returned_code_sha256": "76138df9a7c8399877ea22d6401f9e4bc210bf6aed0ab740e134d7a93635190b",
+    "returned_code_bytes": 74390,
+    "receipt_and_transfer_methods": [
+      "transfer_tokens",
+      "get_resolution_receipt",
+      "_settlement_receipt",
+      "get_trader_portfolio"
+    ]
+  },
+  "published_grid_source_sha256": "76138df9a7c8399877ea22d6401f9e4bc210bf6aed0ab740e134d7a93635190b",
+  "grid_source_matches_published": true
+}
